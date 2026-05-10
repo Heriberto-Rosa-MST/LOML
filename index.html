@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>For You, My Love 💐</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blush:    #f2d0d8;
+      --rose:     #c8748a;
+      --deep:     #7a2d45;
+      --cream:    #fdf6f0;
+      --sage:     #8aab8a;
+      --gold:     #c9a96e;
+      --text:     #3a1a24;
+      --muted:    #9e7a84;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Jost', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ── Petal rain ── */
+    #petals { position: fixed; inset: 0; pointer-events: none; z-index: 999; overflow: hidden; }
+    .petal {
+      position: absolute;
+      top: -40px;
+      width: 12px;
+      height: 16px;
+      border-radius: 50% 0 50% 0;
+      background: pink;
+      opacity: 0;
+      animation: fall 5s linear infinite;
+    }
+    @keyframes fall {
+      0%   { transform: translateY(0) rotate(0deg);   opacity: .7; }
+      100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* ── Hero ── */
+    #hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 60px 24px;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 0%, #f7e0e8 0%, transparent 70%),
+        radial-gradient(ellipse 60% 40% at 80% 100%, #e8f0e4 0%, transparent 70%),
+        var(--cream);
+      z-index: 1;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: white;
+      border: 1px solid var(--blush);
+      border-radius: 999px;
+      padding: 6px 18px;
+      font-size: .75rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--rose);
+      margin-bottom: 32px;
+      box-shadow: 0 2px 12px rgba(200,116,138,.12);
+      animation: fadeUp .8s ease both;
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.8rem, 8vw, 6.5rem);
+      font-weight: 300;
+      line-height: 1.05;
+      color: var(--deep);
+      animation: fadeUp .8s .15s ease both;
+    }
+    .hero-title em { font-style: italic; color: var(--rose); }
+
+    .hero-sub {
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      font-weight: 300;
+      color: var(--muted);
+      margin-top: 20px;
+      max-width: 480px;
+      line-height: 1.7;
+      animation: fadeUp .8s .3s ease both;
+    }
+
+    .hero-divider {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 40px auto;
+      width: 260px;
+      animation: fadeUp .8s .45s ease both;
+    }
+    .hero-divider span { flex: 1; height: 1px; background: var(--blush); }
+    .hero-divider .icon { font-size: 1.4rem; }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      color: var(--muted);
+      font-size: .7rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      animation: bounce 2s infinite;
+    }
+    .scroll-hint::after {
+      content: '';
+      width: 1px;
+      height: 32px;
+      background: var(--rose);
+      opacity: .4;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50%       { transform: translateX(-50%) translateY(6px); }
+    }
+
+    /* ── Sections shared ── */
+    section { position: relative; z-index: 1; }
+
+    .section-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 100px 24px;
+    }
+
+    .section-label {
+      font-size: .7rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--rose);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 300;
+      line-height: 1.15;
+      color: var(--deep);
+      margin-bottom: 32px;
+    }
+    .section-title em { font-style: italic; color: var(--rose); }
+
+    .image-card {
+      padding: 0;
+      overflow: hidden;
+      max-height: 320px;
+    }
+
+    .image-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      border-radius: 20px;
+    }
+
+    /* ── Nurses Week ── */
+    #nurses {
+      background:
+        radial-gradient(ellipse 70% 50% at 10% 50%, #f0f5ee 0%, transparent 70%),
+        white;
+    }
+
+    .nurses-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 48px;
+    }
+    @media (max-width: 600px) { .nurses-grid { grid-template-columns: 1fr; } }
+
+    .nurse-card {
+      background: var(--cream);
+      border: 1px solid var(--blush);
+      border-radius: 20px;
+      padding: 32px 28px;
+      position: relative;
+      overflow: hidden;
+      transition: transform .3s, box-shadow .3s;
+    }
+    .nurse-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(122,45,69,.1);
+    }
+    .nurse-card::before {
+      content: '';
+      position: absolute;
+      top: -30px; right: -30px;
+      width: 100px; height: 100px;
+      border-radius: 50%;
+      background: var(--blush);
+      opacity: .35;
+    }
+    .nurse-card .card-icon { font-size: 2rem; margin-bottom: 14px; }
+    .nurse-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--deep);
+      margin-bottom: 8px;
+    }
+    .nurse-card p {
+      font-size: .9rem;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+    .nurse-card.wide { grid-column: 1 / -1; }
+
+    /* ── Letter ── */
+    #letter {
+      background:
+        radial-gradient(ellipse 80% 60% at 90% 30%, #fce8ef 0%, transparent 65%),
+        var(--cream);
+    }
+
+    .letter-card {
+      background: white;
+      border-radius: 28px;
+      padding: clamp(40px, 6vw, 72px);
+      box-shadow: 0 8px 48px rgba(122,45,69,.08), 0 2px 8px rgba(122,45,69,.04);
+      position: relative;
+      max-width: 680px;
+    }
+    .letter-card::before {
+      content: '"';
+      position: absolute;
+      top: -20px; left: 32px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 8rem;
+      line-height: 1;
+      color: var(--blush);
+      pointer-events: none;
+    }
+    .letter-body {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+      font-weight: 300;
+      line-height: 1.85;
+      color: var(--text);
+      font-style: italic;
+    }
+    .letter-sig {
+      margin-top: 32px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      color: var(--rose);
+      font-style: normal;
+      font-weight: 600;
+    }
+
+    /* ── Moms Day ── */
+    #moms {
+      background: white;
+    }
+    .moms-flex {
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+    }
+    .mom-quote-block {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+    }
+    .mom-quote-block .num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3.5rem;
+      font-weight: 300;
+      color: var(--blush);
+      line-height: 1;
+      min-width: 48px;
+    }
+    .mom-quote-block .content h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--deep);
+      margin-bottom: 6px;
+    }
+    .mom-quote-block .content p {
+      font-size: .92rem;
+      line-height: 1.75;
+      color: var(--muted);
+    }
+
+    /* mothers day jpg */
+    .image-block {
+      width: 100%;
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid var(--blush);
+      box-shadow:
+        0 8px 32px rgba(122,45,69,.08),
+        0 2px 8px rgba(122,45,69,.05);
+      background: white;
+      padding: 10px;
+    }
+
+    .image-block img {
+      width: 100%;
+      height: 420px;
+      object-fit: contain;
+      background: #fff;
+      display: block;
+      border-radius: 24px;
+    }
+
+    /* ── Countdown ── */
+    #countdown {
+      background:
+        linear-gradient(135deg, var(--deep) 0%, #5a1e30 100%);
+      color: white;
+    }
+    #countdown .section-label { color: var(--blush); }
+    #countdown .section-title { color: white; }
+    #countdown .section-title em { color: var(--blush); }
+
+    .countdown-wrap {
+      display: flex;
+      gap: clamp(16px, 4vw, 40px);
+      margin-top: 48px;
+      flex-wrap: wrap;
+    }
+    .cd-box {
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 20px;
+      padding: 28px 32px;
+      text-align: center;
+      min-width: 110px;
+      flex: 1;
+    }
+    .cd-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 300;
+      line-height: 1;
+      color: var(--blush);
+    }
+    .cd-label {
+      font-size: .68rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.5);
+      margin-top: 6px;
+    }
+    .cd-event-label {
+      font-size: .8rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--blush);
+      margin-bottom: 12px;
+      opacity: .8;
+    }
+    .cd-group { display: flex; flex-direction: column; gap: 8px; }
+    .cd-group-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-style: italic;
+      color: rgba(255,255,255,.6);
+      margin-bottom: 4px;
+    }
+
+    /* ── Footer ── */
+    footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 60px 24px;
+      background: var(--deep);
+      color: rgba(255,255,255,.45);
+      font-size: .8rem;
+      letter-spacing: .08em;
+    }
+    footer strong { color: var(--blush); font-weight: 400; }
+
+    /* ── Animations ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+  <!-- Falling petals -->
+  <div id="petals">
+</div>
+
+  <!-- ── HERO ── -->
+  <section id="hero">
+    <div class="hero-badge">🌸 May 2026 &nbsp;·&nbsp; Happy Mother's Day</div>
+    <h1 class="hero-title">To the most amazing, hardworking, caring <br><em>mama and nurse</em><br></h1>
+    <p class="hero-sub">Happy Mother's Day & Nurses Week</p>
+    <div class="hero-divider">
+      <span></span>
+      <span class="icon">🌹</span>
+      <span></span>
+    </div>
+    <div class="scroll-hint">scroll</div>
+  </section>
+
+  <!-- ── NURSES WEEK ── -->
+  <section id="nurses">
+    <div class="section-inner">
+      <p class="section-label reveal">Nurses Week · May 3-9</p>
+      <h2 class="section-title reveal">"Hi my name is Abby and I'll be your <em>nurse</em> today!"</h2>
+      <p class="reveal" style="color:var(--muted);max-width:560px;line-height:1.8;font-size:.95rem;">
+        To the most dedicated, compassionate, capable nurse I know. You care so much, and you do so much. This week is for you but I hope you know that I celebrate you every single day.
+      </p>
+
+      <div class="nurses-grid">
+        <div class="nurse-card reveal">
+          <div class="card-icon">🩺</div>
+          <h3>From CNA to LPN and now <em>RN</em></h3>
+          <p>I'm so incredibly proud of you and all the hard work you've done to become the amazing nurse you are today.
+            <br>I can't believe you're the same girl who failed comp twice and barely survived our first semester of college. You're so passionate about nursing and every time I see you in your element; studying, working, or talking about your shift, I see this whole other side of you that blows me away. You were <em>born</em> to be in healthcare and you inspire me everyday.
+          </p>
+        </div>
+        <div class="nurse-card reveal">
+          <div class="card-icon">💙</div>
+          <h3>Don't push <em>potassium</em></h3>
+          <p>I will never get tired of hearing about your shifts and hearing you geek out about healthcare and nursing.
+            <br>Hearing your talk about your shift is one of my favorite parts about what you do. I get to see Nurse Abby, not just my Abby, but the badass nurse who saves lives, has crazy shifts, and is always doing the best she can. You always tell me the funniest, coolest, sometimes grossest stories and I love them and you. It makes me appreciate a side of you I don't get see but I know is there. 
+          </p>
+        </div>
+        <div class="nurse-card reveal">
+          <div class="card-icon">🌼</div>
+          <h3>Garden full of <em>daisies</em></h3>
+          <p>What I love most about you as nurse truly is how much you genuinely care.
+            <br>You have an enourmous heart and try so hard to make every one of your patients feel cared for and comfortable. You advocate for them, advocate for their families, and do everything you possibly can to make whatever they're going through easier.
+            <br>It's when I'm most in awe of you, you're so selfless and full of love.
+          </p>
+        </div>
+        <div class="nurse-card reveal">
+          <div class="nurse-card reveal image-card">
+            <img src="edit_IMG_9874.jpg" alt="Abby">
+          </div>
+        </div>
+        <div class="nurse-card wide reveal" style="background:var(--deep);border-color:var(--deep);">
+          <p style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.1rem,3vw,1.5rem);font-style:italic;color:white;font-weight:300;line-height:1.75;position:relative;z-index:1;">
+            Congratulations on graduting from nursing school and becoming an RN. I am so proud of you and all the hard work you've done to get here - <em>MWAH</em>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── MOTHER'S DAY ── -->
+  <section id="moms">
+    <div class="section-inner">
+      <p class="section-label reveal">Mother's Day · May 10</p>
+      <h2 class="section-title reveal">"Hey Siri, call my <em>baby mama</em>"</h2>
+      <div class="moms-flex">
+        <div class="mom-quote-block reveal">
+          <div class="num">01</div>
+          <div class="content">
+            <h3>My foundation</h3>
+            <p>You are my foundation baby. You are the reason I am who I am today. You're an incredible mother and have helped me become the best father I can be for our baby boy. You are my rock, my other half, my soulmate and you are the most amazing mama to our baby boy.</p>
+          </div>
+        </div>
+        <div class="mom-quote-block reveal">
+          <div class="num">02</div>
+          <div class="content">
+            <h3>Baby boy.. which one? </h3>
+            <p>Mateo is without a doubt the center of our universe. He is so smart, has such a big personality, and is surrounded by so much love. You are the reason for that. His smiles and belly laughs came from you. His softness and love, he felt that first from you. His curiosity and wonder is because you created an environment where he could thrive.
+              <br>You are responsible not just physically creating our baby boy (which is already a miracle) but you're responsible for creating a smart, loving, sometimes rude, but innocent and curious baby boy. 
+            </p>
+          </div>
+        </div>
+        <div class="mom-quote-block reveal">
+          <div class="num">03</div>
+          <div class="content">
+            <h3>Endless love</h3>
+            <p>The love, energy, and time you put into both Mateo & I truly feels infiite. You're heart is enourmous and you pour so much of your love into our lives and I truly value it.
+              <br> From day 1 I knew you'd be an amazing mama. You're such a natural at taking care of baby boy and understanding his needs. You're so patient and have taught me so much about what it means to be a father and parent. You make me want to be a better man, partner, and father and I'm so grateful for you and Mateo every single day.
+            </p>
+          </div>
+        </div>
+        <div class="mom-quote-block reveal image-block">
+          <img src="edit_IMG_4469.jpg" alt="Family photo">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <strong>Happy Nurses Week &amp; Happy Mother's Day</strong>
+    <strong> I love you so much ❤️</strong>
+  </footer>
+
+  <script>
+    // ── Falling petals ──
+    const petalContainer = document.getElementById('petals');
+    const colors = ['#f2b8c6','#f7cfd8','#e8b4c4','#fde0e8','#c8e6c4','#d4edda'];
+    for (let i = 0; i < 28; i++) {
+      const p = document.createElement('div');
+      p.className = 'petal';
+      p.style.cssText = `
+        left: ${Math.random() * 100}%;
+        width: ${8 + Math.random() * 10}px;
+        height: ${10 + Math.random() * 14}px;
+        background: ${colors[Math.floor(Math.random() * colors.length)]};
+        animation-duration: ${6 + Math.random() * 10}s;
+        animation-delay: ${Math.random() * 12}s;
+        border-radius: ${Math.random() > .5 ? '50% 0 50% 0' : '0 50% 0 50%'};
+        opacity: 0;
+      `;
+      petalContainer.appendChild(p);
+    }
+
+    // ── Scroll reveal ──
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // ── Countdowns ──
+    const events = [
+      { name: 'Nurses Week Begins', emoji: '🩺', date: new Date('2025-05-06T00:00:00') },
+      { name: "Mother's Day",        emoji: '🌸', date: new Date('2025-05-11T00:00:00') },
+    ];
+
+    function pad(n) { return String(n).padStart(2, '0'); }
+
+    function renderCountdowns() {
+      const wrapper = document.getElementById('countdowns-wrapper');
+      const now = new Date();
+      wrapper.innerHTML = '';
+
+      events.forEach(ev => {
+        const diff = ev.date - now;
+        const past = diff < 0;
+        const absDiff = Math.abs(diff);
+        const days    = Math.floor(absDiff / 86400000);
+        const hours   = Math.floor((absDiff % 86400000) / 3600000);
+        const mins    = Math.floor((absDiff % 3600000)  / 60000);
+        const secs    = Math.floor((absDiff % 60000)    / 1000);
+
+        const group = document.createElement('div');
+        group.className = 'cd-group';
+        group.innerHTML = `
+          <div class="cd-group-title">${ev.emoji} ${ev.name}</div>
+          ${past
+            ? `<p style="color:var(--blush);font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-style:italic;">We're celebrating right now! 🎉</p>`
+            : `<div class="countdown-wrap">
+                <div class="cd-box"><div class="cd-num">${pad(days)}</div><div class="cd-label">Days</div></div>
+                <div class="cd-box"><div class="cd-num">${pad(hours)}</div><div class="cd-label">Hours</div></div>
+                <div class="cd-box"><div class="cd-num">${pad(mins)}</div><div class="cd-label">Minutes</div></div>
+                <div class="cd-box"><div class="cd-num">${pad(secs)}</div><div class="cd-label">Seconds</div></div>
+              </div>`
+          }
+        `;
+        wrapper.appendChild(group);
+      });
+    }
+
+    renderCountdowns();
+    setInterval(renderCountdowns, 1000);
+  </script>
+</body>
+</html>
